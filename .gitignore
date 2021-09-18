@@ -1,0 +1,18 @@
+# Build results
+[Dd]ebug
+[Rr]elease
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+_sgbak/
+
+# Visual Studio
+.vs/
+
+# Nuget Packages
+**/[Pp]ackages/*
+
+# Click-Once directory
+publish/
+
