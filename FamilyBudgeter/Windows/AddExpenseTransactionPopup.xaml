@@ -1,0 +1,23 @@
+﻿<Window x:Class="FamilyBudgeterWPF.AddExpenseTransactionPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FamilyBudgeterWPF"
+        mc:Ignorable="d"
+        Title="Add Expense Transaction" Height="237.958" Width="408.901" ResizeMode="NoResize" Cursor="Arrow" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Grid>
+        <Label x:Name="labelRecurringExpense" Content="Recurring Expense" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelIsCleared" Content="Is Cleared" HorizontalAlignment="Left" Margin="51,39,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.106,-2.573"/>
+        <Label x:Name="labelComments" Content="Comments" HorizontalAlignment="Left" Margin="46,70,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelPaymentDate" Content="Payment Date" HorizontalAlignment="Left" Margin="35,101,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.173,-3.345"/>
+        <Label x:Name="labelPaymentAmount" Content="Payment Amount" HorizontalAlignment="Left" Margin="17,132,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="buttonAddTransaction" Content="Add Transaction" HorizontalAlignment="Left" Margin="225,177,0,0" VerticalAlignment="Top" Width="150" Height="25" Click="OnButtonAddTransactionClick"/>
+        <ComboBox x:Name="comboBoxRecurringExpense" HorizontalAlignment="Left" Margin="156,8,0,0" VerticalAlignment="Top" Width="219"/>
+        <ComboBox x:Name="comboBoxIsCleared" HorizontalAlignment="Left" Margin="156,39,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="textBoxComments" HorizontalAlignment="Left" Height="23" Margin="156,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="219"/>
+        <DatePicker x:Name="datePickerPaymentDate" HorizontalAlignment="Left" Margin="156,101,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="textBoxPaymentAmount" HorizontalAlignment="Left" Height="23" Margin="156,132,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</Window>

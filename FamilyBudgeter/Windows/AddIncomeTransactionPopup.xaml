@@ -1,0 +1,23 @@
+﻿<Window x:Class="FamilyBudgeterWPF.AddIncomeTransactionPopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FamilyBudgeterWPF"
+        mc:Ignorable="d"
+        Title="Add Income Transaction" Height="257.463" Width="428.358" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Loaded="Window_Loaded">
+    <Grid>
+        <Label x:Name="labelRecurringIncome" Content="Recurring Income" HorizontalAlignment="Left" Margin="30,21,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelIsCleared" Content="Is Cleared" HorizontalAlignment="Left" Margin="71,52,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.106,-2.573"/>
+        <Label x:Name="labelComments" Content="Comments" HorizontalAlignment="Left" Margin="66,83,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelReceiveDate" Content="Receive Date" HorizontalAlignment="Left" Margin="55,114,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.173,-3.345"/>
+        <Label x:Name="labelReceiveAmount" Content="Receive Amount" HorizontalAlignment="Left" Margin="37,145,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="buttonAddTransaction" Content="Add Transaction" HorizontalAlignment="Left" Margin="245,190,0,0" VerticalAlignment="Top" Width="150" Height="25" Click="OnButtonAddTransactionClick"/>
+        <ComboBox x:Name="comboBoxRecurringIncome" HorizontalAlignment="Left" Margin="176,21,0,0" VerticalAlignment="Top" Width="219"/>
+        <ComboBox x:Name="comboBoxIsCleared" HorizontalAlignment="Left" Margin="176,52,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="textBoxComments" HorizontalAlignment="Left" Height="23" Margin="176,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="219"/>
+        <DatePicker x:Name="datePickerReceiveDate" HorizontalAlignment="Left" Margin="176,114,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="textBoxReceiveAmount" HorizontalAlignment="Left" Height="23" Margin="176,145,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</Window>

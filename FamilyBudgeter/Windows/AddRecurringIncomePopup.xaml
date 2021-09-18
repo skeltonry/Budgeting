@@ -1,0 +1,27 @@
+﻿<Window x:Class="FamilyBudgeterWPF.AddRecurringIncomePopup"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FamilyBudgeterWPF"
+        mc:Ignorable="d"
+        Title="Add Recurring Income" Height="318.056" Width="379.167" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="Arrow" Loaded="Window_Loaded">
+    <Grid Margin="0,0,4,0">
+        <Label x:Name="labelAccount" Content="Account" HorizontalAlignment="Left" Margin="69,14,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="comboBoxAccount" HorizontalAlignment="Left" Margin="150,14,0,0" VerticalAlignment="Top" Width="199"/>
+        <Label x:Name="labelPaymentFrom" Content="Payment From" HorizontalAlignment="Left" Margin="37,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.331,-0.263"/>
+        <TextBox x:Name="textBoxPaymentFrom" HorizontalAlignment="Left" Height="23" Margin="150,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199"/>
+        <Label x:Name="labelEstimatedAmount" Content="Estimated Amount" HorizontalAlignment="Left" Margin="15,76,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBoxEstimatedAmount" HorizontalAlignment="Left" Height="23" Margin="150,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="114"/>
+        <ComboBox x:Name="comboBoxPayFrequency" HorizontalAlignment="Left" Margin="150,107,0,0" VerticalAlignment="Top" Width="114"/>
+        <Label x:Name="labelPayFrequency" Content="Pay Frequency" HorizontalAlignment="Left" Margin="37,107,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelDayOfMonth" Content="Day of Month" HorizontalAlignment="Left" Margin="40,138,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="textBoxDayOfMonth" HorizontalAlignment="Left" Height="23" Margin="150,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="114"/>
+        <Label x:Name="labelEffectiveDate" Content="Effective Date" HorizontalAlignment="Left" Margin="40,169,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="labelExpirationDate" Content="Expiration Date" HorizontalAlignment="Left" Margin="32,200,0,0" VerticalAlignment="Top"/>
+        <DatePicker x:Name="datePickerEffectiveDate" HorizontalAlignment="Left" Margin="150,169,0,0" VerticalAlignment="Top" Width="199"/>
+        <DatePicker x:Name="datePickerExpirationDate" HorizontalAlignment="Left" Margin="150,200,0,0" VerticalAlignment="Top" Width="199"/>
+        <Button x:Name="buttonCreateIncome" Content="Create Income" HorizontalAlignment="Left" Margin="217,252,0,0" VerticalAlignment="Top" Width="132" Click="OnButtonCreateIncomeClick"/>
+
+    </Grid>
+</Window>

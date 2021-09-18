@@ -1,0 +1,316 @@
+﻿<Window x:Class="FamilyBudgeterWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FamilyBudgeterWPF"
+        mc:Ignorable="d"
+        Title="Family Budgeter" WindowState="Maximized" Loaded="Window_Loaded" Width="1025.044" Closing="Window_Closing">
+    <Window.Resources>
+        <CollectionViewSource x:Key="userViewSource" d:DesignSource="{d:DesignInstance {x:Type local:User}, CreateList=True}"/>
+        <CollectionViewSource x:Key="accountViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Account}, CreateList=True}"/>
+        <CollectionViewSource x:Key="recurringExpenseViewSource" d:DesignSource="{d:DesignInstance {x:Type local:RecurringExpense}, CreateList=True}"/>
+        <CollectionViewSource x:Key="incomeTransactionViewSource" d:DesignSource="{d:DesignInstance {x:Type local:IncomeTransaction}, CreateList=True}"/>
+        <CollectionViewSource x:Key="recurringIncomeViewSource" d:DesignSource="{d:DesignInstance {x:Type local:RecurringIncome}, CreateList=True}"/>
+        <CollectionViewSource x:Key="expenseTransactionViewSource" d:DesignSource="{d:DesignInstance {x:Type local:ExpenseTransaction}, CreateList=True}"/>
+        <CollectionViewSource x:Key="totalDebtModelViewSource" d:DesignSource="{d:DesignInstance {x:Type local:TotalDebtModel}, CreateList=True}"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource userViewSource}">
+        <TabControl x:Name="tabControl" Margin="0,0,0,0" SelectionChanged="OnTabControlSelectionChanged" >
+            <TabItem x:Name="tabItemUsers" Header="Users">
+                <Grid>
+                    <DataGrid x:Name="dataGridUsers" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="0,0,0,120" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.ColumnSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="userIdColumn" Binding="{Binding Id}" Header="Id" Width="SizeToHeader" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="firstNameColumn" Binding="{Binding FirstName}" Header="First Name" Width="200" />
+                            <DataGridTextColumn x:Name="lastNameColumn" Binding="{Binding LastName}" Header="Last Name" Width="200"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="buttonSaveChanges" 
+                            Content="Save Changes" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,25,25" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonSaveUserChangesClick" Grid.Column="1" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItemAccounts" Header="Accounts">
+                <Grid>
+                    <DataGrid x:Name="accountDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource accountViewSource}}" Margin="0,0,0,120" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.ColumnSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="accountIdColumn" Binding="{Binding Id}" Header="Id" Width="SizeToHeader" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="nameColumn" Binding="{Binding Name}" Header="Name" Width="200" IsReadOnly="False"/>
+                            <DataGridTextColumn x:Name="typeColumn" Binding="{Binding Type}" Header="Type" Width="75" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="userFirstNameColumn" Binding="{Binding User.FirstName}" Header="First Name" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="userLastNameColumn" Binding="{Binding User.LastName}" Header="Last Name" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="debtTypeColumn" Binding="{Binding DebtType.Name}" Header="Debt Type" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="balanceColumn" Binding="{Binding Balance, StringFormat={}{0:C}}" Header="Balance" Width="75" IsReadOnly="False"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="buttonAddAccount" 
+                            Content="Add Account" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,203,25" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonAddAccountClick" Grid.Column="1" />
+                    <Button x:Name="buttonSaveAccountChanges" 
+                            Content="Save Changes" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonSaveAccountChangesClick" RenderTransformOrigin="2.444,0.047" Grid.Column="1" Margin="0,0,25,25" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItemRecurringIncome" Header="Recurring Income">
+                <Grid>
+                    <DataGrid x:Name="recurringIncomeDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource recurringIncomeViewSource}}" Margin="0,0,0,120" RowDetailsVisibilityMode="VisibleWhenSelected">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="recurringIncomeIdColumn" Binding="{Binding Id}" Header="Id" Width="SizeToHeader" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="recurringIncomeAccountIdColumn" Binding="{Binding Account.Name}" Header="Account Name" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="paymentFromColumn" Binding="{Binding PaymentFrom}" Header="Payment From" Width="150"/>
+                            <DataGridTextColumn x:Name="recurringIncomeEstimatedAmountColumn" Binding="{Binding EstimatedAmount, StringFormat={}{0:C}}" Header="Estimated Amount" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="recurringIncomePayFrequencyColumn" Binding="{Binding PayFrequency}" Header="Pay Frequency" Width="SizeToHeader" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="recurringIncomeDayOfMonthColumn" Binding="{Binding DayOfMonth}" Header="Day Of Month" Width="SizeToHeader"/>
+                            <DataGridTemplateColumn x:Name="RecurringIncomeEffectiveDateColumn" Header="Effective Date" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding EffectiveDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn x:Name="recurringIncomeExpirationDateColumn" Header="Expiration Date" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding ExpirationDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="buttonAddRecurringIncome" 
+                            Content="Add Income" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,203,25" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonAddRecurringIncomeClick" Grid.Column="1" />
+                    <Button x:Name="buttonSaveRecurringIncomeChanges" 
+                            Content="Save Changes" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonSaveRecurringIncomeChangesClick" RenderTransformOrigin="2.444,0.047" Grid.Column="1" Margin="0,0,25,25" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItemRecurringExpenses" Header="Recurring Expenses">
+                <Grid>
+                    <DataGrid x:Name="recurringExpenseDataGrid" CanUserAddRows="False" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource recurringExpenseViewSource}}" Margin="0,0,0,120" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.ColumnSpan="4">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="recurringExpensesIdColumn" Binding="{Binding Id}" Header="Id" Width="SizeToHeader" IsReadOnly="True" />
+                            <DataGridTextColumn x:Name="recurringExpensesAccountIdColumn" Binding="{Binding Account.Name}" Header="Account Name" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="paymentToColumn" Binding="{Binding PaymentTo}" Header="Payment To" Width="150"/>
+                            <DataGridTextColumn x:Name="recurringExpensesEstimatedAmountColumn" Binding="{Binding EstimatedAmount, StringFormat={}{0:C}}" Header="Estimated Amount" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="recurringExpensesPayFrequencyColumn" Binding="{Binding PayFrequency}" Header="Pay Frequency" Width="SizeToHeader" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="recurringExpensesDayOfMonthColumn" Binding="{Binding DayOfMonth}" Header="Day Of Month" Width="SizeToHeader"/>
+                            <DataGridTemplateColumn x:Name="recurringExpensesEffectiveDateColumn" Header="Effective Date" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding EffectiveDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn x:Name="recurringExpensesExpirationDateColumn" Header="Expiration Date" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding ExpirationDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="buttonAddRecurringExpense" 
+                            Content="Add Expense" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,203,25" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonAddRecurringExpenseClick" Grid.Column="3" />
+                    <Button x:Name="buttonSaveRecurringExpenseChanges" 
+                            Content="Save Changes" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonSaveRecurringExpenseChangesClick" RenderTransformOrigin="2.444,0.047" Grid.Column="3" Margin="0,0,25,25" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItemIncomeTransactions" Header="Income Transactions">
+                <Grid>
+                    <Button x:Name="buttonShowDefaultIncomeTransactions" 
+                            Content="Default View"
+                            HorizontalAlignment="Right" 
+                            Margin="0,5,381,25"
+                            VerticalAlignment="Top"
+                            Width="150"
+                            Height="25" 
+                            Click="OnButtonShowDefaultIncomeTransactionsClick"/>
+                    <Button x:Name="buttonShowOpenIncomeTransactions" 
+                            Content="Show Open"
+                            HorizontalAlignment="Right" 
+                            Margin="0,5,203,25"
+                            VerticalAlignment="Top"
+                            Width="150"
+                            Height="25" 
+                            Click="OnButtonShowOpenIncomeTransactionsClick"/>
+                    <Button x:Name="buttonShowAllIncomeTransactions" 
+                            Content="Show All"
+                            HorizontalAlignment="Right" 
+                            Margin="0,5,25,25"
+                            VerticalAlignment="Top"
+                            Width="150"
+                            Height="25"
+                            Click="OnButtonShowAllIncomeTransactionsClick"/>
+                    <DataGrid x:Name="incomeTransactionDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource incomeTransactionViewSource}}" Margin="0,37,0,120" RowDetailsVisibilityMode="VisibleWhenSelected">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="incomeGuidColumn" Binding="{Binding Guid}" Header="Guid" Width="250" IsReadOnly="True"/>
+                            <DataGridCheckBoxColumn x:Name="incomeIsClearedColumn" Binding="{Binding IsCleared}" Header="Is Cleared" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="incomeIdColumn" Binding="{Binding RecurringIncome.PaymentFrom}" Header="Recurring Income" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="incomeCommentsColumn" Binding="{Binding Comments}" Header="Comments" Width="200"/>
+                            <DataGridTextColumn x:Name="receiveAmountColumn" Binding="{Binding ReceiveAmount, StringFormat={}{0:C}}" Header="Receive Amount" Width="150"/>
+                            <DataGridTemplateColumn x:Name="receiveDateColumn" Header="Receive Date" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding ReceiveDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="buttonAutoGenIncomeTransactions"
+                            Content="Generate Transactions"
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,381,25"
+                            VerticalAlignment="Bottom"
+                            Width="150"
+                            Height="75"
+                            Click="OnButtonAutoGenIncomeTransactionsClick">
+                    </Button>
+                    <Button x:Name="buttonAddIncomeTransaction" 
+                            Content="Add Income Transaction" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,203,25" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonAddIncomeTransactionClick" Grid.Column="3" />
+                    <Button x:Name="buttonSaveIncomeTransactionChanges" 
+                            Content="Save Changes" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonSaveIncomeTransactionsChangesClick" RenderTransformOrigin="2.444,0.047" Grid.Column="3" Margin="0,0,25,25" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItemExpenseTransactions" Header="Expense Transactions">
+                <Grid>
+                    <Button x:Name="buttonShowDefaultExpenseTransactions" 
+                            Content="Default View"
+                            HorizontalAlignment="Right" 
+                            Margin="0,5,381,25"
+                            VerticalAlignment="Top"
+                            Width="150"
+                            Height="25" 
+                            Click="OnButtonShowDefaultExpenseTransactionsClick"/>
+                    <Button x:Name="buttonShowOpenExpenseTransactions" 
+                            Content="Show Open"
+                            HorizontalAlignment="Right" 
+                            Margin="0,5,203,25"
+                            VerticalAlignment="Top"
+                            Width="150"
+                            Height="25" 
+                            Click="OnButtonShowOpenExpenseTransactionsClick"/>
+                    <Button x:Name="buttonShowAllExpenseTransactions" 
+                            Content="Show All"
+                            HorizontalAlignment="Right" 
+                            Margin="0,5,25,25"
+                            VerticalAlignment="Top"
+                            Width="150"
+                            Height="25"
+                            Click="OnButtonShowAllExpenseTransactionsClick"/>
+                    <DataGrid x:Name="expenseTransactionDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource expenseTransactionViewSource}}" Margin="0,37,0,120" RowDetailsVisibilityMode="VisibleWhenSelected">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="expenseGuidColumn" Binding="{Binding Guid}" Header="Guid" Width="250" IsReadOnly="True"/>
+                            <DataGridCheckBoxColumn x:Name="expenseIsClearedColumn" Binding="{Binding IsCleared}" Header="Is Cleared" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="expenseIdColumn" Binding="{Binding RecurringExpense.PaymentTo}" Header="Recurring Expense" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="expenseCommentsColumn" Binding="{Binding Comments}" Header="Comments" Width="200"/>
+                            <DataGridTextColumn x:Name="paymentAmountColumn" Binding="{Binding PaymentAmount, StringFormat={}{0:C}}" Header="Payment Amount" Width="150"/>
+                            <DataGridTemplateColumn x:Name="paymentDateColumn" Header="Payment Date" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding PaymentDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=true, ValidatesOnExceptions=true}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="buttonAutoGenExpenseTransactions"
+                            Content="Generate Transactions"
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,381,25"
+                            VerticalAlignment="Bottom"
+                            Width="150"
+                            Height="75"
+                            Click="OnButtonAutoGenExpenseTransactionsClick" Grid.Column="1">
+                    </Button>
+                    <Button x:Name="buttonAddExpenseTransaction" 
+                            Content="Add Expense Transaction" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,0,203,25" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonAddExpenseTransactionClick" Grid.Column="1" />
+                    <Button x:Name="buttonSaveExpenseTransactionChanges" 
+                            Content="Save Changes" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Bottom" 
+                            Width="150" 
+                            Height="75"
+                            Click="OnButtonSaveExpenseTransactionsChangesClick" RenderTransformOrigin="2.444,0.047" Grid.Column="1" Margin="0,0,25,25" />
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItemCashFlow" Header="Cash Flow">
+                <Grid>
+                    <Label x:Name="labelCurrentCash" Content="Current Cash" HorizontalAlignment="Left" Margin="25,25,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="textBoxCurrentCash" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="125,25,0,0"/>
+                    <Label x:Name="labelSelectDate" Content="Select a date" HorizontalAlignment="Left" Margin="25,75,0,0" VerticalAlignment="Top"/>
+                    <DatePicker x:Name="datePickerSelectedDate" Width="120" HorizontalAlignment="Left" Margin="125,75,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="labelRemainingCash" Content="Remaining Cash" HorizontalAlignment="Left" Margin="25, 125, 0, 0"/>
+                    <TextBox x:Name="textBoxRemainingCash" Height="23" TextWrapping="Wrap" Text="" Width="120" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="125,125,0,0"/>
+                    <Button x:Name="buttonCalculateCashFlow" Content="Calculate Cash Flow" HorizontalAlignment="Left" Margin="125,175,0,0" VerticalAlignment="Top" Width="125" Click="OnButtonCalculateCashFlowClick"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="tabItemTotalDebt" Header="Total Debt">
+                <Grid>
+                    <DataGrid x:Name="dataGridTotalDebt" AutoGenerateColumns="False" CanUserAddRows="False" EnableRowVirtualization="True" ItemsSource="{Binding Source={StaticResource totalDebtModelViewSource}}" RowDetailsVisibilityMode="VisibleWhenSelected">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="userNameColumn" Binding="{Binding UserName}" Header="User" Width="200" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="descriptionColumn" Binding="{Binding Description}" Header="Description" Width="400" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="totalDebtDebtTypeColumn" Binding="{Binding DebtType}" Header="DebtType" Width="150" IsReadOnly="True"/>
+                            <DataGridTextColumn x:Name="amountColumn" Binding="{Binding Amount, StringFormat={}{0:C}}" Header="Amount" Width="150" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
